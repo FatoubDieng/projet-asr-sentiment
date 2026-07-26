@@ -1,5 +1,14 @@
+title: ASR Sentiment Francais
+emoji: 🎙️
+colorFrom: blue
+colorTo: purple
+sdk: gradio
+sdk_version: "4.31.0"
+app_file: app.py
+pinned: false
+
 # Projet DL: detection Automatique de sentiment(positif / négatif / neutre) dans des appels vocaux 
-# a l'aide Wav2Vec 2.0 (ASR) et BERT (NLP)
+# a l'aide Wav2Vec 2.0 (ASR) et BERT (sentiment)
 
 ![Architecture du pipeline](docs/assets/architecture.png)
 
@@ -15,7 +24,6 @@ Tests
 Limites connues
 Structure du projet
 
----
 
 ## Architecture
 
@@ -37,11 +45,9 @@ Le pipeline suit 4 étapes séquentielles, implémentées chacune dans un module
 Ce découplage permet de tester, maintenir et faire évoluer chaque brique
 indépendamment (voir `tests/`).
 
----
+## Modèles utilisé
 
-## Modèles utilisés
-
-| Tâche                | Modèle                                  | Lien Hugging Face                                                                                                   |
+                                                                                                 |
 | ASR (Speech-to-Text) | Wav2Vec 2.0 XLSR-53, fine-tuné français | [jonatasgrosman/wav2vec2-large-xlsr-53-french](https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-french) |
 | Analyse de sentiment | DistilCamemBERT fine-tuné sentiment     | [cmarkea/distilcamembert-base-sentiment](https://huggingface.co/cmarkea/distilcamembert-base-sentiment)             |
 
@@ -81,9 +87,8 @@ pip install -r requirements.txt
 > **Note (Windows uniquement)** : si vous rencontrez une erreur liée à `hf_xet` lors
 > du premier téléchargement des modèles depuis Hugging Face, désactivez ce mécanisme
 > de transfert avant de relancer :
-> ```powershell
+> powershell
 > $env:HF_HUB_DISABLE_XET = "1"
-> ```
 
 Au premier lancement, les modèles (~1,5 Go au total) sont automatiquement téléchargés
 depuis Hugging Face et mis en cache localement (`~/.cache/huggingface/`) ; les
@@ -132,13 +137,13 @@ print(response.json())
 
 
 **Réponse type :**
-```json
+json
 {
   "transcription": "cette expérience était vraiment décevante...",
   "sentiment": "négatif",
   "confidence": 0.891
 }
-```
+
 
 
 ## Démonstration sur 3 fichiers de test
@@ -153,11 +158,13 @@ Trois fichiers audio de démonstration, un par classe de sentiment, sont fournis
  `exemple_neutre.wav` : "Le colis est arrivé mardi à quatorze heures..."  neutre 
 
 Pour reproduire la démonstration :
+
 bash
+
 curl -X POST "http://127.0.0.1:8000/predict" -F "file=@data/samples/exemple_test.wav"
 curl -X POST "http://127.0.0.1:8000/predict" -F "file=@data/samples/exemple_negatif.wav"
 curl -X POST "http://127.0.0.1:8000/predict" -F "file=@data/samples/exemple_neutre.wav"
-```
+
 
 ## Tests
 
@@ -169,19 +176,22 @@ La suite de tests couvre :
 - la transcription ASR (type de retour, non-vacuité) ;
 - l'analyse de sentiment (textes positifs/négatifs, texte vide, structure du résultat).
 
----
+
 
 ## Limites connues
 
 - **Erreurs en cascade** : une transcription ASR imparfaite 
   Exemple observé : le mot "décevante" mal transcrit en
   "disvante". 
-- **Mapping 5→3 classes** : le modèle de sentiment est entraîné sur une échelle de 1 à
+- **Mapping 5-3 classes** : le modèle de sentiment est entraîné sur une échelle de 1 à
   5 étoiles ; le mapping vers 3 classes (négatif/neutre/positif) est une approximation,
-  notamment la classe "3 étoiles → neutre" qui peut recouvrir des nuances variées.
+  notamment la classe "3 étoiles, neutre" qui peut recouvrir des nuances variées.
 - **Durée maximale** : les fichiers de plus de 5 minutes sont rejetés (limite fixée)
 - **Langue** : le pipeline est optimisé pour le français ; son usage sur d'autres
   langues n'est pas supporté par les modèles choisis.
+- **Performance sur Hugging Face Spaces** : la démo publique tourne sur un matériel
+  CPU gratuit, plus lent qu'une exécution locale avec GPU — l'inférence peut donc
+  prendre quelques secondes supplémentaires par rapport à un usage local.
 
 ## Structure du projet
 
