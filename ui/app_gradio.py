@@ -1,7 +1,15 @@
 import gradio as gr
 from src.pipeline import run_pipeline
+import spaces
+
+try:
+    gpu_decorator = spaces.GPU
+except ImportError:
+    def gpu_decorator(func):
+        return func
 
 
+@gpu_decorator
 def process_audio_ui(audio_file):
     """
     Fonction appelée par Gradio à chaque soumission d'un fichier audio.
