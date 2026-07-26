@@ -1,31 +1,7 @@
-Title
-ASR Sentiment Francais
-
-Emoji
-🎙️
-
-Colorfrom
-blue
-
-Colorto
-purple
-
-Sdk
-gradio
-
-Sdk_version
-4.31.0
-
-App_file
-app.py
-
-Pinned
-false
-
 Projet ASR + Analyse de sentiment
 Pipeline complet transformant un fichier audio en français en une analyse de sentiment (positif / négatif / neutre), en combinant reconnaissance vocale (ASR) et traitement du langage naturel (NLP).
 
-Afficher l'image
+![Architecture du pipeline](docs/assets/architecture.png)
 
 Sommaire
 Architecture
@@ -141,32 +117,4 @@ Durée maximale : les fichiers de plus de 5 minutes sont automatiquement rejeté
 Langue : le pipeline est optimisé exclusivement pour le français ; son usage sur d'autres langues n'est pas supporté par les modèles choisis.
 Performance sur Hugging Face Spaces : la démo publique tourne sur un matériel CPU gratuit, plus lent qu'une exécution locale avec GPU — l'inférence peut donc prendre quelques secondes supplémentaires par rapport à un usage local.
 
-## Structure du projet
-
-projet-asr-sentiment/
-├── src/
-│   ├── audio_preprocessing.py
-│   ├── asr_model.py
-│   ├── sentiment_model.py
-│   └── pipeline.py
-├── api/
-│   └── main.py
-├── ui/
-│   └── app_gradio.py
-├── tests/
-│   ├── test_audio_preprocessing.py
-│   ├── test_asr_model.py
-│   └── test_sentiment_model.py
-├── data/
-│   └── samples/
-│       ├── exemple_test.wav
-│       ├── exemple_negatif.wav
-│       └── exemple_neutre.wav
-└── docs/
-├    └── assets/
-├        │__architecture.png
-├
-├── README.md
-├── requirements.txt
-├── .gitignore
-├── .env.example
+![Structure du projet](docs/assets/structure.png)
