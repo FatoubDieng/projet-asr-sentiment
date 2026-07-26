@@ -1,0 +1,13 @@
+torch
+librosa
+transformers
+numpy
+fastapi
+uvicorn[standard]
+python-multipart 
+pytest
+gradio
+soundfile
+sentencepiece
+protobuf
+requests
