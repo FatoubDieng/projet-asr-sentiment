@@ -33,7 +33,7 @@ EVAL_DATASET = [
     },
 ]
 
- #inuscules + suppression de la ponctuation, pour les mettresur un pied d'egalite.
+ ##minuscules + suppression de la ponctuation, pour les mettre sur un pied d'egalite.
 
 def normalize_text(text: str) -> str:
     text = text.lower()

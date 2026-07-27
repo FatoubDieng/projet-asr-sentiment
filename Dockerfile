@@ -22,5 +22,6 @@ COPY . .
 # Port exposé par l'API FastAPI
 EXPOSE 8000
 
-# Commande exécutée au démarrage du conteneur
+##Commande exécutée au démarrage du conteneur
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
