@@ -1,7 +1,7 @@
-# Image de base avec Python 3.11 
+# Image de base légère avec Python 3.11 préinstallé
 FROM python:3.11-slim
 
-# Installation de ffmpeg (Pour décoder les fichiers .mp3 via librosa ou torchaudio (qui a une erreur de notre cote ))
+# Installation de ffmpeg (nécessaire pour décoder les fichiers .mp3 via librosa)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
@@ -9,9 +9,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Dossier de travail à l'intérieur du conteneur
 WORKDIR /app
 
-# Copie et installation des dépendances Python
-# (permet de réutiliser ce cache Docker si seul le code change, pas les dépendances)
+# Copie et installation des dépendances Python en premier
 COPY requirements.txt .
+
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copie du reste du code de l'application
